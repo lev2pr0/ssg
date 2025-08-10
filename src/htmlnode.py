@@ -1,3 +1,5 @@
+from textnode import TextType
+
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
             self.tag = tag            # A string representing the HTML tag name (e.g. "p", "a", "h1", etc.)
@@ -46,3 +48,48 @@ class ParentNode(HTMLNode):
         if self.children is None or len(self.children) == 0:
             raise ValueError("All parent nodes must have children")
         return f'<{self.tag}{self.props_to_html()}>{"".join(child.to_html() for child in self.children)}</{self.tag}>'
+
+def text_node_to_html_node(text_node):
+    if text_node.text_type == TextType.TEXT:
+        return LeafNode(
+            tag=None,
+            value=text_node.text
+        )
+
+    if text_node.text_type == TextType.BOLD:
+        return LeafNode(
+            tag="b",
+            value=text_node.text
+        )
+
+    if text_node.text_type == TextType.ITALIC:
+        return LeafNode(
+            tag="i",
+            value=text_node.text
+        )
+
+    if text_node.text_type == TextType.CODE:
+        return LeafNode(
+            tag="code",
+            value=text_node.text
+        )
+
+    if text_node.text_type == TextType.LINK:
+        return LeafNode(
+            tag="a",
+            value=text_node.text,
+            props={"href": text_node.url}
+        )
+
+    if text_node.text_type == TextType.IMAGE:
+        return LeafNode(
+            tag="img",
+            value="",
+            props={
+                "src": text_node.url,
+                "alt": text_node.text
+            }
+        )
+
+    else:
+        raise ValueError(f"Unknown text type: {text_node.text_type}")
