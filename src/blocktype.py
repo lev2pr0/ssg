@@ -26,10 +26,11 @@ def block_to_block_type(block):
     elif unordered_lists:
         return BlockType.UNORDERED_LIST
     elif ordered_lists:
-        #Write logic to determine if ordered example:
+        # Write logic to determine if ordered example:
             # 1. Item 1
             # 2. Item 2
             # 3. Item 3
         return BlockType.ORDERED_LIST
+        # If not show ValueError "Ordered lists must be sequential"
     else:
         return BlockType.PARAGRAPH
