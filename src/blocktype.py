@@ -26,11 +26,13 @@ def block_to_block_type(block):
     elif unordered_lists:
         return BlockType.UNORDERED_LIST
     elif ordered_lists:
-        # Write logic to determine if ordered example:
-            # 1. Item 1
-            # 2. Item 2
-            # 3. Item 3
-        return BlockType.ORDERED_LIST
-        # If not show ValueError "Ordered lists must be sequential"
+        number_split = block[0][0].split('.')
+        if int(number_split[0]) == 1:
+            for i in range(1, len(number_split)):
+                if number_split[i] == '':
+                    raise ValueError(f"{number_split[i]} in Ordered list must be a number")
+                if number_split[i] < number_split[i-1]:
+                    raise ValueError("Ordered lists must be sequential")
+            return BlockType.ORDERED_LIST
     else:
         return BlockType.PARAGRAPH
