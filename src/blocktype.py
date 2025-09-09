@@ -27,12 +27,12 @@ def block_to_block_type(block):
         return BlockType.UNORDERED_LIST
     elif ordered_lists:
         number_split = block[0][0].split('.')
-        if int(number_split[0]) == 1:
+        if number_split[0] == "1":
             for i in range(1, len(number_split)):
                 if number_split[i] == '':
                     raise ValueError(f"{number_split[i]} in Ordered list must be a number")
-                if number_split[i] < number_split[i-1]:
+                if number_split[i] - number_split[i-1] != 1:
                     raise ValueError("Ordered lists must be sequential")
-            return BlockType.ORDERED_LIST
+        return BlockType.ORDERED_LIST
     else:
         return BlockType.PARAGRAPH
